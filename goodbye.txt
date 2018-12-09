@@ -1,0 +1,2 @@
+print("Goobye");
+print("Oops");
