@@ -4,6 +4,7 @@ class hello{
       String s2 = s1;
       s2 = "Hello again!";
       System.out.println(s1);
+      System.out.println(s2);
     }
 
 }
