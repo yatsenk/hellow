@@ -1,2 +1,2 @@
-print("Goobye.");
-print("Oops.");
+print("Goobye!");
+print("Oops :\");
