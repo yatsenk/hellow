@@ -1,2 +1,0 @@
-print("Goobye!");
-print("Oops :\");

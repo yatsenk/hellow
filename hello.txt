@@ -1,4 +1,0 @@
-print("hellow.");
-print(" +world.");
-print("Hello!");
-print("Hello-adv");
