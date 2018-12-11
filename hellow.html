@@ -1,15 +1,17 @@
 <meta charset="utf-8">
 <script>
 
-var rounds = 0;
+var sum = parseInt(prompt("Сумма вклада: "));
+var percent = parseInt(prompt("Процентная ставка, %: "));
+var period = parseInt(prompt("Срок, лет:"));
 
-do {
-	if (Math.random() * 6 >= 1) rounds++;
-	else break; 
-} while (prompt("Будешь играть? 1 - да.") == "1");
+var year = 1; //стартовый год
 
-alert("Раундов сыграно: " + rounds);
-
-(rounds > 6) ? alert("Ты победил теорвер!") : alert("Теорвер победил тебя!");
+for (;;){
+	sum = sum * (1+percent/100);
+	alert("Прошло лет: " + year + ", сумма на счете: " + Math.floor(sum));
+	if (year >= 10) break;
+	year++;
+}
 
 </script>
