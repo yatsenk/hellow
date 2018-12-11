@@ -1,27 +1,39 @@
 <meta charset="utf-8">
 <script>
 
-//подсчет красных оптимизированно
-
-var time = Date.now();  //время выполнения цикла
-
-var sim = 100000000; // количество раундов симуляции
-var red_now = 0; //сколько раз выпало красное в текущей последовательности
-var red_max = 0; //максимальная длина последовательности
-
-for (var i=0; i<sim; i++){
-	if (Math.round(Math.random()*36) >= 19){
-		red_now++; //увеличиваем счетчик текущей последовательности
-	} else {
-		if (red_now > red_max){ //сравниваем текущую последовательность с максимальной - ведь только в этой части кода может произойти изменение, что дает нам ускорение на 0.2s
-			red_max = red_now;
-		}
-		red_now = 0; //обнуляем счетчик длины красной последовательности - потому что закончилась
-	}
-	
+function getRandomInt(min,max){
+	return Math.round(Math.random() * (max - min)) + min; //с floor оптимизированнее
 }
 
-time = (Date.now() - time) / 1000;
-alert("Длина последовательности: " + red_max + "\nВремя выполнения: " + time + "s");
+function getCard() {
+	var cards = ['6','7','8','9','10','J','Q','K','A'];
+	return cards[getRandomInt(0,cards.length-1)];
+}
 
+function getSum(arr){
+	var sum = 0; // итоговая сумма
+
+	for(var i=0;i<arr.length;i++){ // расчет если не туз
+	if (arr[i] != 'A'){
+		if (arr[i] == 'J' || arr[i] == 'Q' || arr[i] == 'K'){
+			sum = sum + 10;
+		} else {
+			sum = sum + parseInt(arr[i]);
+		}
+	}
+	}
+
+	for(var i=0;i<arr.length;i++){ // расчет если туз
+		if (arr[i] == 'A') {
+			(sum > 10) ? (sum = sum + 1) : (sum = sum + 11);
+		}
+	}
+	return sum;
+}
+
+var dealer = [getCard()];
+var player = [getCard(), getCard()];
+
+alert('dealer: ' + dealer + ' \nplayer: ' + player);
+alert(getSum(player));
 </script>
