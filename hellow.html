@@ -1,7 +1,15 @@
 <meta charset="utf-8">
 <script>
-  var a = parseInt(prompt("Введи первое число"));
-  a = parseInt(a);
-  var b = parseInt(prompt("Введи второе число"));
-  alert(a+b);
+
+var rounds = 0;
+
+do {
+	if (Math.random() * 6 >= 1) rounds++;
+	else break; 
+} while (prompt("Будешь играть? 1 - да.") == "1");
+
+alert("Раундов сыграно: " + rounds);
+
+(rounds > 6) ? alert("Ты победил теорвер!") : alert("Теорвер победил тебя!");
+
 </script>
