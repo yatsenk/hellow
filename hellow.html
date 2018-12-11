@@ -1,17 +1,9 @@
 <meta charset="utf-8">
 <script>
 
-var sum = parseInt(prompt("Сумма вклада: "));
-var percent = parseInt(prompt("Процентная ставка, %: "));
-var period = parseInt(prompt("Срок, лет:"));
+arr = [4,5,6,7];
+alert(arr[3]);
 
-var year = 1; //стартовый год
-
-for (;;){
-	sum = sum * (1+percent/100);
-	alert("Прошло лет: " + year + ", сумма на счете: " + Math.floor(sum));
-	if (year >= 10) break;
-	year++;
-}
-
+arr = "Что за нафиг с типизацией происходит?";
+alert(arr);
 </script>
