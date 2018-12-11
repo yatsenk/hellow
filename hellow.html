@@ -1,39 +1,82 @@
 <meta charset="utf-8">
 <script>
 
+var cards = ['6','7','8','9','10','J','Q','K','A']; // карты в колоде
+
+//получение случайного числа в диапазоне
 function getRandomInt(min,max){
+	if (typeof(min) != 'number' || typeof(max) != 'number'){ // проверка вводимых данных
+		alert('ГПСЧ сломался, введите число!');
+	}
 	return Math.round(Math.random() * (max - min)) + min; //с floor оптимизированнее
 }
 
+//получение карты
 function getCard() {
-	var cards = ['6','7','8','9','10','J','Q','K','A'];
 	return cards[getRandomInt(0,cards.length-1)];
 }
 
+//расчет суммы значений карты в массиве
 function getSum(arr){
 	var sum = 0; // итоговая сумма
+	var A = 0; // количество тузов
 
-	for(var i=0;i<arr.length;i++){ // расчет если не туз
-	if (arr[i] != 'A'){
-		if (arr[i] == 'J' || arr[i] == 'Q' || arr[i] == 'K'){
+	for(var i=0;i<arr.length;i++){ // рассчитываем сумму кроме А
+		var sym = arr[i]; //переменная для минимизации чтения массива
+
+		if (!cards.includes(sym)){ // проверка вводимых данных
+			alert('Карты игрока из другой колоды!');
+		}
+
+		if (sym == 'J' || sym == 'Q' || sym == 'K'){
 			sum = sum + 10;
-		} else {
-			sum = sum + parseInt(arr[i]);
-		}
-	}
+		} else if (sym == 'A') {
+			A++;
+		} else sum = sum + parseInt(sym);
 	}
 
-	for(var i=0;i<arr.length;i++){ // расчет если туз
-		if (arr[i] == 'A') {
-			(sum > 10) ? (sum = sum + 1) : (sum = sum + 11);
-		}
+	while(A>0){ // рассчитываем А
+		(sum > 10) ? (sum = sum + 1) : (sum = sum + 11);
+		A--;
 	}
 	return sum;
 }
 
+function getStatus(){
+	return 'Карты дилера: ' + dealer + '\nКарты игрока: ' + player;
+}
+
+//инициализация массива карт дилера и игрока 
 var dealer = [getCard()];
 var player = [getCard(), getCard()];
+var answer = '';
 
-alert('dealer: ' + dealer + ' \nplayer: ' + player);
-alert(getSum(player));
+//цикл игры
+if (getSum(player) == 21) alert('Вы уже выиграли!'); else
+while(true){
+	answer = prompt(getStatus() + "\nХотите взять еще карту? 1 - да.");
+	if (!['1',' '].includes(answer)){ //игра дилера при отказе
+		while (getSum(dealer)<17){
+			dealer.push(getCard());
+		}
+		if (getSum(dealer) > 21){
+			alert(getStatus() + '\nДилер проиграл!');
+		} else if (getSum(dealer) >= 17){
+			alert(getStatus() + '\nДилер выиграл!');
+		}
+		break;
+	}
+	//играем самостоятельно
+	player.push(getCard()); //получить карту
+	sum = getSum(player); //посчитать баллы игрока
+	if (sum == 21) {
+		alert(getStatus() + '\nВы выиграли!');
+		break;
+	}
+	if (sum > 21){
+		alert(getStatus() + '\nВы проиграли!');
+		break;
+	}
+}
+
 </script>
