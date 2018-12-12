@@ -20,28 +20,31 @@ function getCard() {
 function getSum(arr){
 	var sum = 0; // итоговая сумма
 	var A = 0; // количество тузов
+	var symb = ''; //переменная для минимизации чтения массива
 
 	for(var i=0;i<arr.length;i++){ // рассчитываем сумму кроме А
-		var sym = arr[i]; //переменная для минимизации чтения массива
+		var symb = arr[i]; 
 
-		if (!cards.includes(sym)){ // проверка вводимых данных
+		if (!cards.includes(symb)){ // проверка вводимых данных
 			alert('Карты игрока из другой колоды!');
 		}
 
-		if (sym == 'J' || sym == 'Q' || sym == 'K'){
+		if (symb == 'J' || symb == 'Q' || symb == 'K'){
 			sum = sum + 10;
-		} else if (sym == 'A') {
+		} else if (symb == 'A') {
 			A++;
-		} else sum = sum + parseInt(sym);
+		} else sum = sum + parseInt(symb);
 	}
 
 	while(A>0){ // рассчитываем А
 		(sum > 10) ? (sum = sum + 1) : (sum = sum + 11);
 		A--;
 	}
+
 	return sum;
 }
 
+//показ пользователю карт
 function getStatus(){
 	return 'Карты дилера: ' + dealer + '\nКарты игрока: ' + player;
 }
@@ -50,31 +53,30 @@ function getStatus(){
 var dealer = [getCard()];
 var player = [getCard(), getCard()];
 var answer = '';
+var dp_sum = 0; //сумма карт на руках
 
-//цикл игры
-if (getSum(player) == 21) alert('Вы уже выиграли!'); else
+//основной цикл игры
+if (getSum(player) == 21) {alert(getStatus() + '\nВы уже выиграли!');} else 
 while(true){
 	answer = prompt(getStatus() + "\nХотите взять еще карту? 1 - да.");
-	if (!['1',' '].includes(answer)){ //игра дилера при отказе
-		while (getSum(dealer)<17){
-			dealer.push(getCard());
-		}
-		if (getSum(dealer) > 21){
-			alert(getStatus() + '\nДилер проиграл!');
-		} else if (getSum(dealer) >= 17){
-			alert(getStatus() + '\nДилер выиграл!');
-		}
-		break;
-	}
-	//играем самостоятельно
-	player.push(getCard()); //получить карту
-	sum = getSum(player); //посчитать баллы игрока
-	if (sum == 21) {
-		alert(getStatus() + '\nВы выиграли!');
-		break;
-	}
-	if (sum > 21){
+	if (['1',' '].includes(answer)){ // если хочет
+		player.push(getCard()); //получить карту
+		dp_sum = getSum(player); //посчитать баллы игрока
+		if (dp_sum == 21) {
+			alert(getStatus() + '\nВы выиграли!');
+			break;
+		} else if (dp_sum > 21){
 		alert(getStatus() + '\nВы проиграли!');
+			break;
+		}
+	} else { //если не хочет карту - играет дилер
+		while (getSum(dealer) < 17) dealer.push(getCard()); //набирает карты, пока не будет 17 очков или больше
+		dp_sum = getSum(dealer);
+		if (dp_sum == 21) {alert(getStatus() + '\nДилер выиграл. Блекджек!');}
+		else if (dp_sum > 21) {alert(getStatus() + '\nДилер проиграл. Перебор!');}
+		else if (dp_sum > getSum(player)) {alert(getStatus() + '\nДилер выиграл. Сумма больше игрока!');}
+		else if (dp_sum < getSum(player)) {alert(getStatus() + '\nДилер проиграл. Сумма меньше игрока!');}
+		else if (dp_sum == getSum(player)) {alert(getStatus() + '\nНичья!');}
 		break;
 	}
 }
