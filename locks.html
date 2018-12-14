@@ -1,0 +1,24 @@
+<meta charset="utf-8">
+<script>
+
+function makeArmy() {
+
+  var shooters = [];
+
+  for (var i = 0; i < 6; i++) {
+    var shooter = function() { // функция-стрелок
+      alert( i ); // выводит свой номер
+    };
+    shooters.push(shooter);
+  }
+
+  return shooters;
+}
+
+var army = makeArmy();
+i = 3;
+army[0](); // стрелок выводит 10, а должен 0
+army[5](); // стрелок выводит 10...
+// .. все стрелки выводят 10 вместо 0,1,2...9
+
+</script>
